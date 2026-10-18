@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int t[2][10001];
+    long long t[2][100001];
 
     long long solve(vector<int>& nums, bool flag, int i, int N){
         if(i == N){
