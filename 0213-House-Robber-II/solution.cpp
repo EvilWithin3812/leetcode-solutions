@@ -1,34 +1,29 @@
 class Solution {
 public:
-    int t[101];
-    int solve(vector<int>& nums, int i, int N){
-        if(i > N) return 0;
+    long long solve(vector<int>& nums, bool flag, int i, int N){
+        if(i == N){
+            return 0;
+        }
 
-        if(t[i] != -1) return t[i];
 
-        int take = nums[i] + solve(nums, i+2, N);
-        int skip = solve(nums, i+1, N);
+        //take it
+        long long val = nums[i];
+        if(flag == false){
+            val = -val;
+        }
+        long long take = val + solve(nums, !flag, i+1, N);
 
-        return t[i] = max(take, skip);
+        //dont take it
+
+        long long skip = solve(nums, flag, i+1, N);
+
+        return max(take, skip);
+
     }
 
-    int rob(vector<int>& nums) {
-
-        memset(t, -1, sizeof(t));
+    long long maxAlternatingSum(vector<int>& nums) {
         int N = nums.size();
-        if(N == 1)
-            return nums[0];
-        if(N == 2)
-            return max(nums[0], nums[1]);
-
-        int firstCase = solve(nums, 0, N-2);
-
-        memset(t, -1, sizeof(t));
-        int secondCase = solve(nums, 1, N-1);
-
-        return max(firstCase, secondCase);
-
-        
+        return solve(nums, true, 0, N);
         
     }
 };
