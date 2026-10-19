@@ -1,3 +1,5 @@
+//GREEDY APPROACH 
+
 // class Solution {
 // public:
 //     int findLongestChain(vector<vector<int>>& pairs) {
@@ -24,6 +26,10 @@
 //     }
 // };
 
+
+
+
+// LIS APPROACH RECURSION + MEMOIZATION
 
 class Solution {
 public:
