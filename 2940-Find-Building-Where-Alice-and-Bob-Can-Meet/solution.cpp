@@ -56,15 +56,13 @@ public:
                 continue;
             }
                 
-
-
             int start = b + 1;
             int end = N-1;
             int maxAns = -1;
             while(start <= end){
                 int mid = start + (end - start) / 2;
                 
-                int check = query(segmentTree, 0, b+1, mid, 0, N-1, heights);
+                int check = query(segmentTree, 0, start, mid, 0, N-1, heights);
 
                 if(heights[check] > heights[a]){
                     maxAns = mid;
