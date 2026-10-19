@@ -17,7 +17,7 @@ public:
         segmentTree[i] = (heights[leftIdx] >= heights[rightIdx]) ? leftIdx : rightIdx;
     }
 
-    int query(vector<int>& segmentTree, int i, int start, int end, int l, int r){
+    int query(vector<int>& segmentTree, int i, int start, int end, int l, int r, vector<int>& heights){
         if(end < l || start > r){
             return -1;
         }
@@ -28,13 +28,13 @@ public:
 
         int mid = l + (r - l)/2;
 
-        int leftIdx = query(segmentTree, 2*i+1, start, end, l, mid);
-        int rightIdx = query(segmentTree, 2*i+2, start, end, mid+1, r);
+        int leftIdx = query(segmentTree, 2*i+1, start, end, l, mid, heights);
+        int rightIdx = query(segmentTree, 2*i+2, start, end, mid+1, r, heights);
 
         if(leftIdx == -1) return rightIdx;
         if(rightIdx == -1) return leftIdx; 
 
-        if(segmentTree[leftIdx] >= segmentTree[rightIdx])
+        if(heights[leftIdx] >= heights[rightIdx])
             return leftIdx;
         
         return rightIdx;
@@ -56,7 +56,7 @@ public:
             while(start <= end){
                 int mid = start + (end - start) / 2;
                 
-                int check = query(segmentTree, 0, start, mid, 0, N-1);
+                int check = query(segmentTree, 0, start, mid, 0, N-1, heights);
 
                 if(heights[check] > heights[maxi]){
                     end = mid - 1;
