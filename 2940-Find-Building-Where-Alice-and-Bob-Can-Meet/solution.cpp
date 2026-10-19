@@ -51,9 +51,11 @@ public:
             int a = min(queries[i][0], queries[i][1]); 
             int b = max(queries[i][0], queries[i][1]);
 
-            if(a == b || heights[a] < heights[b])
+            if(a == b || heights[a] < heights[b]){
                 ans.push_back(b);
                 continue;
+            }
+                
 
 
             int start = b + 1;
