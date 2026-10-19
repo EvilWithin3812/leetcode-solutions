@@ -48,20 +48,29 @@ public:
         buildTree(segmentTree, heights, 0, 0, N-1);
 
         for(int i = 0; i < queries.size(); i++){
-            int maxi = max(queries[i][0], queries[i][1]);
+            int maxi = max(queries[i][0], queries[i][1]); //idx
 
-            int check = query(segmentTree, 0, queries[i][1]+1, N-1, 0, N-1);
-            cout << check << endl;
-            int left = queries[i][1] + 1;
-            int right = N-1;
+            int start = queries[i][1] + 1;
+            int end = N-1;
+            int maxAns = -1;
+            while(start <= end){
+                int mid = start + (end - start) / 2;
+                
+                int check = query(segmentTree, 0, start, mid, 0, N-1);
 
-
+                if(heights[check] > heights[maxi]){
+                    end = mid - 1;
+                    maxAns = max(maxAns, check);
+                }
+                else{
+                    start = mid + 1;
+                }
+            }
+            ans.push_back(maxAns);
+        
         }
 
         return ans;
-
-
-        
 
     }
 };
