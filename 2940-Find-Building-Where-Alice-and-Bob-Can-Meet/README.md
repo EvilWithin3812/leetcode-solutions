@@ -60,8 +60,8 @@ For ans[i] == -1, It can be shown that there is no building where Alice and Bob 
 ## Solution
 
 - **Language**: C++
-- **Runtime**: 1283 ms
-- **Memory**: 266 MB
+- **Runtime**: 0 ms
+- **Memory**: 8.4 MB
 
 ---
 
