@@ -13,8 +13,9 @@ public:
         }
         if(t[i][d] != -1)
             return t[i][d];
-
         
+
+        //not typical take and skip problem 
         int finalResult = INT_MAX;
         int maxi = 0;
         for(int idx = i; idx <= N-d; idx++){
