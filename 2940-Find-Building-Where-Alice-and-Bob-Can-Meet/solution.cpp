@@ -1,92 +1,84 @@
 class Solution {
 public:
-    // Builds the segment tree using the max function and stores indices
-    void buildSegmentTree(int i, int l, int r, int segmentTree[], vector<int>& heights) {
-        if (l == r) {
-            segmentTree[i] = l; // Store the index
+    void buildTree(vector<int>& segmentTree, vector<int>& heights, int i, int l, int r){
+        if(l == r){
+            segmentTree[i] = l;
             return;
         }
         
-        int mid = l + (r - l) / 2;
-        buildSegmentTree(2 * i + 1, l, mid, segmentTree, heights);
-        buildSegmentTree(2 * i + 2, mid + 1, r, segmentTree, heights);
-        
-        // Store the index of the maximum element
-        segmentTree[i] = (heights[segmentTree[2 * i + 1]] >= heights[segmentTree[2 * i + 2]]) ?
-                        segmentTree[2 * i + 1] : segmentTree[2 * i + 2];
+        int mid = l + (r - l)/2;
+
+        buildTree(segmentTree, heights, 2*i+1, l, mid);
+        buildTree(segmentTree, heights, 2*i+2, mid+1, r);
+
+        int leftIdx = segmentTree[2*i+1];
+        int rightIdx = segmentTree[2*i+2];
+
+        segmentTree[i] = (heights[leftIdx] >= heights[rightIdx]) ? leftIdx : rightIdx;
     }
 
-    // Function to construct the segment tree
-    int* constructST(vector<int>& heights, int n) {
-        int* segmentTree = new int[4 * n];
-        buildSegmentTree(0, 0, n - 1, segmentTree, heights);
-        return segmentTree;
-    }
-
-    // Function to query the segment tree for the index of the maximum value in range [start, end]
-    int querySegmentTree(int start, int end, int i, int l, int r, int segmentTree[], vector<int>& heights) {
-        if (l > end || r < start) {
-            return -1; // Return -1 for out-of-bound queries
+    int query(vector<int>& segmentTree, int i, int start, int end, int l, int r, vector<int>& heights){
+        if(end < l || start > r){
+            return -1;
         }
-        
-        if (l >= start && r <= end) {
-            return segmentTree[i]; // Return the index of the maximum element
+
+        if(start <= l && end >= r){
+            return segmentTree[i];
         }
+
+        int mid = l + (r - l)/2;
+
+        int leftIdx = query(segmentTree, 2*i+1, start, end, l, mid, heights);
+        int rightIdx = query(segmentTree, 2*i+2, start, end, mid+1, r, heights);
+
+        if(leftIdx == -1) return rightIdx;
+        if(rightIdx == -1) return leftIdx; 
+
+        if(heights[leftIdx] >= heights[rightIdx])
+            return leftIdx;
         
-        int mid = l + (r - l) / 2;
-        int leftIndex = querySegmentTree(start, end, 2 * i + 1, l, mid, segmentTree, heights);
-        int rightIndex = querySegmentTree(start, end, 2 * i + 2, mid + 1, r, segmentTree, heights);
-
-        // Handle cases where one side is out of bounds
-        if (leftIndex == -1)
-            return rightIndex;
-        if (rightIndex == -1)
-            return leftIndex;
-
-        // Return the index of the maximum element
-        return (heights[leftIndex] >= heights[rightIndex]) ? leftIndex : rightIndex;
+        return rightIdx;
     }
 
-    // Function to return the index of the maximum element in the range from a to b
-    int RMIQ(int st[], vector<int>& heights, int n, int a, int b) {
-        return querySegmentTree(a, b, 0, 0, n - 1, st, heights);
-    }
 
     vector<int> leftmostBuildingQueries(vector<int>& heights, vector<vector<int>>& queries) {
-        int n = heights.size();
-        int* segmentTree = constructST(heights, n);
+        int N = heights.size();
+        vector<int> segmentTree(4 * N);
+        vector<int> ans;
+        buildTree(segmentTree, heights, 0, 0, N-1);
 
-        vector<int> result;
-        for(auto& query: queries){
-            int alice = min(query[0],query[1]);
-            int bob   = max(query[0],query[1]);
+        for(int i = 0; i < queries.size(); i++){
+            int a = min(queries[i][0], queries[i][1]); 
+            int b = max(queries[i][0], queries[i][1]);
 
-            if(alice == bob || heights[bob] > heights[alice]){
-                result.push_back(bob);
+            if(a == b || heights[a] < heights[b]){
+                ans.push_back(b);
                 continue;
             }
+                
 
-            int l = bob+1;
-            int r = n - 1;
-            int result_idx = INT_MAX;
-            while (l <= r) {
-                int mid = l + (r - l) / 2;
-                int idx = RMIQ(segmentTree, heights, n, l, mid);
 
-                if (heights[idx] > max(heights[alice], heights[bob])) {
-                    r = mid - 1;
-                    result_idx = min(result_idx, idx);
-                } else {
-                    l = mid + 1;
+            int start = b + 1;
+            int end = N-1;
+            int maxAns = -1;
+            while(start <= end){
+                int mid = start + (end - start) / 2;
+                
+                int check = query(segmentTree, 0, b+1, mid, 0, N-1, heights);
+
+                if(heights[check] > heights[a]){
+                    maxAns = mid;
+                    end = mid - 1;
+                }
+                else{
+                    start = mid + 1;
                 }
             }
-
-            if(result_idx == INT_MAX) {
-                result.push_back(-1);
-            } else {
-                result.push_back(result_idx);
-            }
+            ans.push_back(maxAns);
+        
         }
-        return result;
+
+        return ans;
+
     }
 };
