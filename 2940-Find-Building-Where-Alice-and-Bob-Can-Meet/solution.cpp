@@ -47,8 +47,16 @@ public:
         vector<int> ans;
         buildTree(segmentTree, heights, 0, 0, N-1);
 
-        int temp = query(segmentTree, 0, 0, N-1, 0, N-1);
-        cout << temp << endl;
+        for(int i = 0; i < queries.size(); i++){
+            int maxi = max(queries[i][0], queries[i][1]);
+
+            int check = query(segmentTree, 0, queries[i][1]+1, N-1, 0, N-1);
+            cout << check << endl;
+            int left = queries[i][1] + 1;
+            int right = N-1;
+
+
+        }
 
         return ans;
 
