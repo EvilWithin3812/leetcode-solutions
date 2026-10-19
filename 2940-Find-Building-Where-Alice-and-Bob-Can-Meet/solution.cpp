@@ -19,7 +19,7 @@ public:
 
     int query(vector<int>& segmentTree, int i, int start, int end, int l, int r){
         if(end < l || start > r){
-            return INT_MIN;
+            return -1;
         }
 
         if(start <= l && end >= r){
@@ -30,6 +30,9 @@ public:
 
         int leftIdx = query(segmentTree, 2*i+1, start, end, l, mid);
         int rightIdx = query(segmentTree, 2*i+2, start, end, mid+1, r);
+
+        if(leftIdx == -1) return rightIdx;
+        if(rightIdx == -1) return leftIdx; 
 
         if(segmentTree[leftIdx] >= segmentTree[rightIdx])
             return leftIdx;
