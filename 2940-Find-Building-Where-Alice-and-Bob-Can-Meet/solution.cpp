@@ -48,19 +48,25 @@ public:
         buildTree(segmentTree, heights, 0, 0, N-1);
 
         for(int i = 0; i < queries.size(); i++){
-            int maxi = max(queries[i][0], queries[i][1]); //idx
+            int a = min(queries[i][0], queries[i][1]); 
+            int b = max(queries[i][0], queries[i][1]);
 
-            int start = queries[i][1] + 1;
+            if(a == b || heights[a] < heights[b])
+                ans.push_back(b);
+                continue;
+
+
+            int start = b + 1;
             int end = N-1;
             int maxAns = -1;
             while(start <= end){
                 int mid = start + (end - start) / 2;
                 
-                int check = query(segmentTree, 0, start, mid, 0, N-1, heights);
+                int check = query(segmentTree, 0, b+1, mid, 0, N-1, heights);
 
-                if(heights[check] > heights[maxi]){
+                if(heights[check] > heights[a]){
+                    maxAns = mid;
                     end = mid - 1;
-                    maxAns = max(maxAns, check);
                 }
                 else{
                     start = mid + 1;
