@@ -46,7 +46,8 @@
 
 
 
-//better approach
+//better approach space complexity is O(1) in this 
+
 
 class Solution {
 public:
