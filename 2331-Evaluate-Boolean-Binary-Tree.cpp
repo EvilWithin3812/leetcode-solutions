@@ -15,7 +15,6 @@ public:
         if(root->left == NULL && root->right == NULL){
             return root->val;
         }
-
         int left = solve(root->left);
         int right = solve(root->right);
         if(root->val == 2){
@@ -25,8 +24,6 @@ public:
     }
 
     bool evaluateTree(TreeNode* root) {
-        if(root->val == 0)return false;
         return solve(root);
-
     }
 };
