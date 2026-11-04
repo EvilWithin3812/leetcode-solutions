@@ -81,17 +81,14 @@ public:
         
         vector<int> ans;
         stack<int> st;
-        int flag = false;
+        
         for(int i = 0; i < N; i++){
             if(!visited[i]){
                 if(isCycle(um, st, inRecursion, visited, i)){
-                   flag = true;
+                   return {};
                 }
             }
         }
-
-        if(flag == true)
-            return ans;
         while(!st.empty()){
             ans.push_back(st.top());
             st.pop();
