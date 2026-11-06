@@ -1,0 +1,81 @@
+// checking if the graph is bipartite or not using DFS
+// DFS CODE to check 
+
+
+// class Solution {
+// public:
+//     bool isCycle(vector<vector<int>>& graph, int i, vector<int>& colour, int currColour){
+//         colour[i] = currColour;
+
+//         for(auto xd : graph[i]){
+//             if(colour[xd] == currColour)
+//                 return false;
+
+//             if(colour[xd] == -1){
+//                 if(!isCycle(graph, xd, colour, 1-currColour)){
+//                     return false;
+//                 }
+//             }
+//         }
+//         return true;
+//     }
+
+//     bool isBipartite(vector<vector<int>>& graph) {
+//         int N = graph.size();
+//         vector<int> colour(N, -1);
+        
+//         for(int i = 0; i < N; i++){
+//             if(colour[i] == -1){
+//                 if(!isCycle(graph, i, colour, 0)){
+//                     return false;
+//                 }
+//             }
+//         }
+
+//         return true;
+
+//     }
+// };
+
+
+// BFS CODE FOR THE SAME THING 
+class Solution {
+public:
+
+    bool isCycle(vector<vector<int>>& graph, int i, vector<int>& colour, int currColour){
+        queue<int> q;
+        q.push(i);
+        colour[i] = currColour;
+
+        while(!q.empty()){
+            int currNode = q.front();
+            q.pop();
+
+            for(auto xd : graph[currNode]){
+                if(colour[xd] == colour[currNode]){
+                    return false;
+                }
+                else if(colour[xd] == -1){
+                    colour[xd] = 1 - colour[currNode];
+                    q.push(xd);
+                }
+            }
+        }
+
+        return true;
+    }
+    
+    bool isBipartite(vector<vector<int>>& graph) {
+        int N = graph.size();
+        vector<int> colour(N, -1);
+        
+        for(int i = 0; i < N; i++){
+            if(colour[i] == -1){
+                if(!isCycle(graph, i, colour, 0)) return false;
+            }
+        }
+        return true;
+        
+
+    }
+};
