@@ -71,9 +71,9 @@ public:
             for (int i = 0; i+L-1 < N; i++) {
                 int j = i + L - 1;
 
-                if (i == j)
+                if (L == 1)
                     t[i][j] = true;
-                else if (i + 1 == j)
+                else if (L == 2)
                     t[i][j] = (s[i] == s[j]);
                 else
                     t[i][j] = (s[i] == s[j] && t[i + 1][j - 1]);
