@@ -4,17 +4,6 @@ public:
         int N = arrival.size();
         vector<int> ans;
 
-        //we are gonna find the end times of arrival vector
-        vector<int> endTime(N);
-        for(int i = 0; i < N; i++){
-            endTime[i] = arrival[i] + load[i];
-        }
-
-
-        for(auto c : endTime){
-            cout << c << " ";
-        }
-
         set<int> st;
         for(int i = 0; i < k; i++){
             st.insert(i);
@@ -23,7 +12,7 @@ public:
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> unavai;
         
         //thinking to store servers frequency in map
-        map<int, int> mp;
+        vector<int> v(N, 0);
 
         int i = 0;
         while(i < N){
@@ -41,8 +30,8 @@ public:
                 if(it == st.end()){
                     it = st.begin();
                 }
-                mp[*it]++;
-                unavai.push({endTime[i], *it});
+                v[*it]++;
+                unavai.push({(arrival[i] + load[i]), *it});
                 st.erase(it);
                 
             }
@@ -50,15 +39,15 @@ public:
         }
 
         int maxi = INT_MIN;
-        for(const auto& xd : mp){
-            if(xd.second > maxi){
-                maxi = xd.second;
+        for(int i = 0; i < v.size(); i++){
+            if(v[i] > maxi){
+                maxi = v[i];
             }
         }
 
-        for(const auto& xd : mp){
-            if(xd.second == maxi){
-                ans.push_back(xd.first);
+        for(int i = 0;i < v.size(); i++){
+            if(v[i] == maxi){
+                ans.push_back(i);
             }
         }
 
