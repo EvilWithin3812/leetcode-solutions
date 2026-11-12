@@ -9,6 +9,7 @@ public:
         int mini = INT_MIN;
 
         int prev = 0;
+        int prev2 = INT_MAX;
         for(int i = 0; i < N; i++){
             if(nums[i] > prev){
                 prev = nums[i];
@@ -23,10 +24,8 @@ public:
                 }
                 prev = nums[i];
             }
-        }
 
-        int prev2 = INT_MAX;
-        for(int i = 0; i < N; i++){
+
             if(nums[i] < prev2){
                 prev2 = nums[i];
                 decreasingCount++;
