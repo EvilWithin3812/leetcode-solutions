@@ -1,27 +1,20 @@
 class Solution {
 public:
-    
-    int find(vector<int>& nums, int i, int j){
-        int curr = 0;
-        for(int xd = i; xd <= j; xd++){
-            curr += nums[xd];
-        }
 
-        return curr;
-    }
 
 
     int minimumSumSubarray(vector<int>& nums, int l, int r) {
         int N = nums.size();
         
         int mini = INT_MAX;
+        
         for(int i = 0; i < N; i++){
+            int curr = 0;
             for(int j = i; j < N; j++){
                 int size = j - i + 1;
-                if(l <= size && size <= r){
-                    int check = find(nums, i, j);
-                    if(check > 0)
-                        mini = min(mini, check);
+                curr += nums[j];
+                if(l <= size && size <= r && curr > 0){
+                    mini = min(mini, curr);
                     
                 }
             }
